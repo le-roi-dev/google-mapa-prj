@@ -1,0 +1,153 @@
+.bg-f2f2f2 {
+    background-color: #f2f2f2;
+}
+.bg-e6e6e6 {
+    background-color: #e6e6e6;
+}
+
+.my-datepicker {
+    padding-left: 2.5rem !important;
+}
+
+.my-select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="red" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: calc(10px);
+    background-position-y: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: orangered;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-top: 3px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+.text-xxs {
+    font-size: 10px;
+}
+.w-350 {
+    width: 350px;
+}
+
+
+.location {
+    display: flex;
+    align-items: center;
+    background: #e6e6e6;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.location img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.location-details {
+    font-weight: bold;
+    color: black;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.location-name {
+    color: black;
+    font-size: 0.9em;
+}
+
+.stars {
+    color: orangered;
+    margin-right: 10px;
+}
+
+.instagram-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png');
+    background-size: cover;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.price-range {
+    font-size: 0.9em;
+    color: black;
+}
+
+.discounts {
+    font-size: 0.7em;
+    color: black;
+    font-weight: bold;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    color: #b62937;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(83, 83, 83, 0);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(89, 89, 89, 0);
+}

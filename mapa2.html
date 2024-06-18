@@ -8,8 +8,6 @@
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXvrWDGvMqJDVE1ruIMWM2fhqKYH4RFNM&callback=initMap"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <style>
         .bg-f2f2f2 {
             background-color: #f2f2f2;
@@ -194,160 +192,43 @@
         <div class="flex flex-col flex-1 h-full">
             <div class="h-20 lg:flex items-center justify-between">
                 <div class="flex gap-2 lg:pb-0 pb-1">
-                    <button id="discount-filter" data-dropdown-toggle="discount-dropdown"
-                        class="text-black bg-e6e6e6 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-                        type="button">% de descuento <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <div id="discount-dropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
-                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="discount-filter">
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-discount-1" type="checkbox" value="0.2"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-discount-1"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        20%</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-discount-2" type="checkbox" value="0.25"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-discount-2"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        25%</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-discount-3" type="checkbox" value="0.3"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-discount-3"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        30%</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-discount-4" type="checkbox" value="0.4"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-discount-4"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        40%</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <button id="club-btn" data-dropdown-toggle="club-dropdown"
-                        class="text-black bg-e6e6e6 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-                        type="button">Tarjeta / Club <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <div id="club-dropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
-                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="club-btn">
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-chile" type="checkbox" value="BANCO DE CHILE"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-chile"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        Banco de Chile</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-ripley" type="checkbox" value="BANCO RIPLEY"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-ripley"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        Banco Ripley</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <select id="discount-filter" class="my-select bg-e6e6e6 py-2 pl-6 pr-2 rounded-lg text-xs">
+                        <option value="NO">% de descuento</option>
+                        <option value="0.2">20%</option>
+                        <option value="0.25">25%</option>
+                        <option value="0.3">30%</option>
+                        <option value="0.4">40%</option>
+                    </select>
+                    <select id="day-filter" class="my-select bg-e6e6e6 py-2 pl-6 pr-2 rounded-lg text-xs">
+                        <option value="">Día de la semana</option>
+                        <option value="lunes">Lunes</option>
+                        <option value="martes">Martes</option>
+                        <option value="miercoles">Miércoles</option>
+                        <option value="jueves">Jueves</option>
+                        <option value="viernes">Viernes</option>
+                        <option value="sabado">Sábado</option>
+                        <option value="domingo">Domingo</option>
+                    </select>
+                    <select id="club-filter" class="my-select bg-e6e6e6 py-2 pl-6 pr-2 rounded-lg text-xs">
+                        <option value="">Tarjeta / Club</option>
+                        <option value="BANCO DE CHILE">Banco de Chile</option>
+                        <option value="BANCO RIPLEY">Banco Ripley</option>
+                    </select>
                 </div>
                 <div class="flex gap-2">
                     <input type="date" id="my-date-picker"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-datepicker">
-                    <button id="category-filter" data-dropdown-toggle="category-dropdown"
-                        class="text-black bg-e6e6e6 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-                        type="button">Categoría <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <div id="category-dropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
-                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="category-filter">
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-Restaurante" type="checkbox" value="Restaurante"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-Restaurante"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        Restaurante</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-Bar" type="checkbox" value="Bar"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-Bar"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        Bar</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-Cafetería" type="checkbox" value="Cafetería"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-Cafetería"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        Cafetería</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <button id="state-filter" data-dropdown-toggle="state-dropdown"
-                        class="text-black bg-e6e6e6 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-                        type="button">Comuna <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <div id="state-dropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
-                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="state-filter">
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-state-1" type="checkbox" value="SANTIAGO"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-state-1"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        Santiago</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-state-2" type="checkbox" value="LAS CONDES"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="checkbox-state-2"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                                        Las Condes</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-datepicker">
+                    <select id="category-filter" class="bg-e6e6e6 py-2 pl-2 pr-2 rounded-lg appearance-none text-xs">
+                        <option value="">Categoría</option>
+                        <option value="Restaurante">Restaurante</option>
+                        <option value="Bar">Bar</option>
+                        <option value="Cafetería">Cafetería</option>
+                    </select>
+                    <select id="state-filter" class="bg-e6e6e6 py-2 pl-2 pr-2 rounded-lg appearance-none text-xs">
+                        <option value="">Comuna</option>
+                        <option value="SANTIAGO">Santiago</option>
+                        <option value="LAS CONDES">Las Condes</option>
+                    </select>
                     <label class="switch">
                         <input type="checkbox" id="geolocation-switch">
                         <span class="slider"></span>
@@ -362,6 +243,20 @@
         </div>
     </div>
     <script>
+        var club = '', state = '', category = '', day = '';
+        var descuento = "0.4";
+
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1;
+        var nowday = nowDate.getDate();
+        var promocion_valida_hasta = `${year}-${month.toString().padStart(2, '0')}-${nowday.toString().padStart(2, '0')}`;
+
+        const checkbox = document.getElementById('geolocation-switch');
+
+        // Set initial value (checked or unchecked)
+        checkbox.checked = true; // Checked
+
         var locations = [
             {
                 "google_maps_data.latitude": -33.4539525,
@@ -7268,43 +7163,111 @@
             }
         ];
 
-        var descuento = "0.4";
-        var clubs = [];
-        var categories = [];
-        var states = [];
-        var discounts = [];
-        
-        var nowDate = new Date();
-        var year = nowDate.getFullYear();
-        var month = nowDate.getMonth() + 1;
-        var now_date = nowDate.getDate();
-        var nowDay = nowDate.getDay();
-        var spanishDays = ["domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado"]
-        var spanishDayString = spanishDays[nowDay];
-        var promocion_valida_hasta = `${year}-${month.toString().padStart(2, '0')}-${now_date.toString().padStart(2, '0')}`;
+        function initMap() {
 
-        const checkbox = document.getElementById('geolocation-switch');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
 
-        // Set initial value (checked or unchecked)
-        checkbox.checked = true; // Checked
+                    map.setCenter(pos);
+                    map.setZoom(15); // Hacer zoom a la ubicación actual
+                }, function () {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, map.getCenter());
+            }
 
-        function handleLocationError(browserHasGeolocation, pos) {
-            var infoWindow = new google.maps.InfoWindow({ map: map });
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(browserHasGeolocation ?
-                'Error: The Geolocation service failed.' :
-                'Error: Your browser doesn\'t support geolocation.');
-        }
-        function filterAndDisplayLocations(map) {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: -33.4489, lng: -70.6693 }
+            });
+
+            var datepicker = document.getElementById('my-date-picker');
+            datepicker.value = promocion_valida_hasta;
+            datepicker.addEventListener('change', function (event) {
+                promocion_valida_hasta = event.target.value;
+                initMap();
+            })
+
+            var descuentoSelect = document.getElementById('discount-filter');
+            descuentoSelect.value = descuento;
+            descuentoSelect.addEventListener('change', function (event) {
+                descuento = event.target.value;
+                initMap();
+            })
+
+            var daySelect = document.getElementById('day-filter');
+            daySelect.addEventListener('change', function (event) {
+                day = event.target.value;
+                initMap();
+            })
+
+            var clubSelect = document.getElementById('club-filter');
+            clubSelect.addEventListener('change', function (event) {
+                club = event.target.value;
+                initMap();
+            })
+
+            var categorySelect = document.getElementById('category-filter');
+            categorySelect.addEventListener('change', function (event) {
+                category = event.target.value;
+                initMap();
+            })
+
+            var stateSelect = document.getElementById('state-filter');
+            stateSelect.addEventListener('change', function (event) {
+                state = event.target.value;
+                initMap();
+            })
+
+            var geolocationSwitch = document.getElementById('geolocation-switch');
+
+            var currentInfoWindow = null;
+
+            geolocationSwitch.addEventListener('change', function () {
+                if (this.checked) {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+
+                            map.setCenter(pos);
+                            map.setZoom(15); // Hacer zoom a la ubicación actual
+                        }, function () {
+                            handleLocationError(true, map.getCenter());
+                        });
+                    } else {
+                        handleLocationError(false, map.getCenter());
+                    }
+                }
+            });
+
+            function handleLocationError(browserHasGeolocation, pos) {
+                var infoWindow = new google.maps.InfoWindow({ map: map });
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(browserHasGeolocation ?
+                    'Error: The Geolocation service failed.' :
+                    'Error: Your browser doesn\'t support geolocation.');
+            }
             var filterLocations = locations;
-            if (clubs.length > 0) filterLocations = filterLocations.filter(location => clubs.includes(location["club_de_beneficios"]));
-            if (categories.length > 0) filterLocations = filterLocations.filter(location => categories.includes(location["google_maps_data.type"]));
-            if (states.length > 0) filterLocations = filterLocations.filter(location => states.includes(location["state"]));
-            if (discounts.length > 0)  filterLocations = filterLocations.filter(location => discounts.includes(`${location[spanishDayString]}`));
-            // if (promocion_valida_hasta) filterLocations = filterLocations.filter(location => location["promocion_valida_hasta"].includes(promocion_valida_hasta));
+            if (club) filterLocations = filterLocations.filter(location => location["club_de_beneficios"] == club);
 
-            console.log(locations.length, filterLocations.length);
+            if (state) filterLocations = filterLocations.filter(location => location["state"] == state);
 
+            if (category) filterLocations = filterLocations.filter(location => location["google_maps_data.type"] == category);
+
+            if (day) filterLocations = filterLocations.filter(location => location[day] == descuento);
+
+            if (promocion_valida_hasta) filterLocations = filterLocations.filter(location => location["promocion_valida_hasta"].includes(promocion_valida_hasta));
+            console.log(club, state, category, day);
+            console.log(locations.length);
+            console.log(filterLocations.length);
             document.querySelector('.sidebar-map').innerHTML = '';
             filterLocations.forEach(location => {
                 const marker = new google.maps.Marker({
@@ -7326,6 +7289,8 @@
                         discountDays += `<div class="discounts">${dayNames[index]}: ${(location[day] * 100).toFixed(0)}%</div>`;
                     }
                 });
+                // const nowDate = new Date();
+                // const nowday = nowDate.getDay();
                 let nowDiscount;
                 days.forEach((day, index) => {
                     if (location[day] && !isNaN(location[day])) {
@@ -7333,29 +7298,29 @@
                         return;
                     }
                 });
+                // const nowDiscount='';
                 const infoContent = `
-                    <div class="location bg-white">
-                        <img src="${location["google_maps_data.photo"] || 'https://lukdescuentos.cl/wp-content/uploads/2024/06/sin-imagen.png'}" />
-                        <div class="location-details">
-                            <h4 class="location-name">${location["google_maps_data.name"]}</h4>
-                            <div class="flex items-center gap-2">
-                                <span class="rating">${(location["google_maps_data.rating"] || 0).toFixed(1)}</span>
-                                <span class="stars">${stars}</span>
-                                <a href="${location["google_maps_data.site"]}" class="instagram-icon"></a>
+                            <div class="location bg-white">
+                                <img src="${location["google_maps_data.photo"] || 'https://lukdescuentos.cl/wp-content/uploads/2024/06/sin-imagen.png'}" />
+                                <div class="location-details">
+                                    <h4 class="location-name">${location["google_maps_data.name"]}</h4>
+                                    <div class="flex items-center gap-2">
+                                        <span class="rating">${(location["google_maps_data.rating"] || 0).toFixed(1)}</span>
+                                        <span class="stars">${stars}</span>
+                                        <a href="${location["google_maps_data.site"]}" class="instagram-icon"></a>
+                                    </div>
+                                    <div class="price-range">$$ - ${location["google_maps_data.type"]}</div>
+                                    <div class="discounts">${location["club_de_beneficios"]}</div>
+                                    ${discountDays}
+                                    <a href="${location["link_detalles"]}" target="_blank">Más detalles</a>
+                                </div>
                             </div>
-                            <div class="price-range">$$ - ${location["google_maps_data.type"]}</div>
-                            <div class="discounts">${location["club_de_beneficios"]}</div>
-                            ${discountDays}
-                            <a href="${location["link_detalles"]}" target="_blank">Más detalles</a>
-                        </div>
-                    </div>
-                `;
+                        `;
 
                 const infoWindow = new google.maps.InfoWindow({
                     content: infoContent
                 });
 
-                var currentInfoWindow = null;
                 function closeInfoWindow() {
                     if (currentInfoWindow) {
                         currentInfoWindow.close();
@@ -7363,141 +7328,33 @@
                 }
 
                 marker.addListener('click', function () {
-                    closeInfoWindow();
+                    if (currentInfoWindow) {
+                        currentInfoWindow.close();
+                    }
                     infoWindow.open(map, marker);
                     currentInfoWindow = infoWindow;
                 });
 
                 const sidebarContent = `
-                    <div class="location">
-                        <img src="${location["google_maps_data.photo"] || 'https://lukdescuentos.cl/wp-content/uploads/2024/06/sin-imagen.png'}" />
-                        <div class="location-details">
-                            <h4 class="location-name">${location["google_maps_data.name"]}</h4>
-                            <div class="flex items-center gap-2">
-                                <span class="rating">${(location["google_maps_data.rating"] || 0).toFixed(1)}</span>
-                                <span class="stars">${stars}</span>
-                                <a href="${location["google_maps_data.site"]}" class="instagram-icon"></a>
+                            <div class="location">
+                                <img src="${location["google_maps_data.photo"] || 'https://lukdescuentos.cl/wp-content/uploads/2024/06/sin-imagen.png'}" />
+                                <div class="location-details">
+                                    <h4 class="location-name">${location["google_maps_data.name"]}</h4>
+                                    <div class="flex items-center gap-2">
+                                        <span class="rating">${(location["google_maps_data.rating"] || 0).toFixed(1)}</span>
+                                        <span class="stars">${stars}</span>
+                                        <a href="${location["google_maps_data.site"]}" class="instagram-icon"></a>
+                                    </div>
+                                    <div class="price-range">$$ - ${location["google_maps_data.type"]}</div>
+                                    <div class="discounts">${location["club_de_beneficios"]} : ${nowDiscount}%</div>
+                                    <a href="${location["link_detalles"]}" target="_blank">Más detalles</a>
+                                </div>
                             </div>
-                            <div class="price-range">$$ - ${location["google_maps_data.type"]}</div>
-                            <div class="discounts">${location["club_de_beneficios"]} : ${nowDiscount}%</div>
-                            <a href="${location["link_detalles"]}" target="_blank">Más detalles</a>
-                        </div>
-                    </div>
-                `;
+                    `;
                 document.querySelector('.sidebar-map').innerHTML += sidebarContent;
             });
+
         }
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 12,
-                center: { lat: -33.4489, lng: -70.6693 }
-            });
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-
-                    map.setCenter(pos);
-                    map.setZoom(15);
-                }, function () {
-                    handleLocationError(true, map.getCenter());
-                });
-            } else {
-                handleLocationError(false, map.getCenter());
-            }
-
-            var datepicker = document.getElementById('my-date-picker');
-            datepicker.value = promocion_valida_hasta;
-            datepicker.addEventListener('change', function (event) {
-                promocion_valida_hasta = event.target.value;
-                filterAndDisplayLocations(map);
-            });
-
-            var descuentoSelect = document.getElementById('discount-filter');
-            descuentoSelect.value = descuento;
-            descuentoSelect.addEventListener('change', function (event) {
-                descuento = event.target.value;
-                filterAndDisplayLocations(map);
-            });
-
-            var clubChecks = document.querySelectorAll('#club-dropdown input[type="checkbox"]');
-            // Add change event listeners to each checkbox
-            clubChecks.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function (event) {
-                    // Handle the change event
-                    event.target.checked ? clubs.push(event.target.value) : clubs = clubs.filter(item => item !== event.target.value);
-                    console.log("clubs", clubs);
-                    filterAndDisplayLocations(map);
-                    // You can add your logic here
-                });
-            });
-
-            var categoryChecks = document.querySelectorAll('#category-dropdown input[type="checkbox"]');
-            // Add change event listeners to each checkbox
-            categoryChecks.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function (event) {
-                    // Handle the change event
-                    event.target.checked ? categories.push(event.target.value) : categories = categories.filter(item => item !== event.target.value);
-                    console.log("categories", categories);
-                    filterAndDisplayLocations(map);
-                    // You can add your logic here
-                });
-            });
-
-            var stateChecks = document.querySelectorAll('#state-dropdown input[type="checkbox"]');
-            // Add change event listeners to each checkbox
-            stateChecks.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function (event) {
-                    // Handle the change event
-                    event.target.checked ? states.push(event.target.value) : states = states.filter(item => item !== event.target.value);
-                    console.log("states", states);
-                    filterAndDisplayLocations(map);
-                    // You can add your logic here
-                });
-            });
-
-            var discountChecks = document.querySelectorAll('#discount-dropdown input[type="checkbox"]');
-            // Add change event listeners to each checkbox
-            discountChecks.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function (event) {
-                    // Handle the change event
-                    event.target.checked ? discounts.push(event.target.value) : discounts = discounts.filter(item => item !== event.target.value);
-                    console.log("discounts", discounts);
-                    filterAndDisplayLocations(map);
-                    // You can add your logic here
-                });
-            });
-
-            var geolocationSwitch = document.getElementById('geolocation-switch');
-            geolocationSwitch.addEventListener('change', function () {
-                if (this.checked) {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            var pos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude
-                            };
-
-                            map.setCenter(pos);
-                            map.setZoom(15);
-                        }, function () {
-                            handleLocationError(true, map.getCenter());
-                        });
-                    } else {
-                        handleLocationError(false, map.getCenter());
-                    }
-                }
-            });
-
-            filterAndDisplayLocations(map);
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            initMap();
-        });    
     </script>
 </body>
 

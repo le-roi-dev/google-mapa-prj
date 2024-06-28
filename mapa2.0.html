@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Promociones</title>
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXvrWDGvMqJDVE1ruIMWM2fhqKYH4RFNM&callback=initMap"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clifford: '#da373d',
+                    }
+                },
+                screens: {
+                    'myxl': '1450px',
+                    'xsm': '320px'
+                },
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <style>
+        .bg-f2f2f2 {
+            background-color: #f2f2f2;
+        }
+
+        .bg-e6e6e6 {
+            background-color: #e6e6e6;
+        }
+
+        .my-select {
+            background-image: url('data:image/svg+xml;utf8,<svg fill="red" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position-x: calc(0px);
+            background-position-y: center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: orangered;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-top: 3px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .text-xxs {
+            font-size: 10px;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            background: #e6e6e6;
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+
+
+        .location a {
+            font-size: 0.7em !important
+        }
+
+        .location-details {
+            font-weight: bold;
+            color: black;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .location-name {
+            color: black;
+            font-weight: bold !important;
+            font-size: 0.6em !important;
+        }
+
+
+
+        .instagram-icon {
+            width: 18px;
+            height: 18px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png');
+            background-size: cover;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 2px;
+        }
+
+        .price-range {
+            font-size: 0.5em;
+            color: black;
+        }
+
+        .discounts {
+            font-size: 0.6em;
+            color: black;
+            font-weight: bold;
+        }
+
+        .my-datepicker {
+            border-radius: 0.5rem !important;
+            padding-left: 0.75rem !important;
+            width: 130px !important;
+            font-size: 12px;
+            height: auto !important;
+            line-height: normal;
+            padding: 10px 12px !important;
+            align-items: center;
+        }
+
+        .h-650 {
+            height: 600;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            color: #b62937;
+        }
+
+        ::-webkit-scrollbar-track {
+            border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: rgba(83, 83, 83, 0);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(89, 89, 89, 0);
+        }
+
+
+        .title {
+            display: none;
+        }
+
+        .sidebar-container {
+            display: none;
+        }
+
+        .bottom-container {
+            display: flex;
+        }
+
+        .map-grand-container {
+            display: block;
+        }
+
+        .filter-select {
+            color: black;
+            background-color: #e6e6e6;
+            border-radius: 8px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            /* font-size: 12px;
+            padding: 10px 16px; */
+            font-size: 12px;
+            padding: 10px 12px 10px 6px;
+            border: 1px solid #ff8142;
+
+        }
+
+        .filter-container {
+            display: block;
+        }
+
+        .child-filter-container {
+            display: flex;
+        }
+
+        .all-container {
+            padding: 0 10px
+        }
+
+        .child-all-container {
+            padding: 10px 20px;
+        }
+
+        .location img {
+            width: 90px;
+            height: 90px;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .infolocation {
+            padding: 5px 5px;
+            display: block;
+            background-color: white !important;
+        }
+
+        .infolocation img {
+            width: 100%;
+            max-width: 130px;
+            max-height: 130px;
+            margin-right: 0;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .infolocation .price-range {
+            font-size: 0.8rem !important;
+        }
+
+        .infolocation .location-name {
+            font-size: 0.8rem !important;
+        }
+
+        .infolocation .discounts {
+            font-size: 0.8rem !important;
+        }
+
+        .infolocation a {
+            font-size: 1rem !important;
+        }
+
+        .rating {
+            font-size: 0.8rem;
+        }
+
+        .stars {
+            font-size: 1rem;
+            color: orangered;
+        }
+
+        @media (min-width: 450px) {
+            .all-container {
+                padding: 0 20px
+            }
+
+            .child-all-container {
+                padding: 10px 20px;
+            }
+        }
+
+
+
+        @media (min-width: 550px) {
+            .child-filter-container {
+                display: flex;
+            }
+
+            .infolocation img {
+                width: 100px;
+                height: 100px;
+                margin-right: 10px;
+                margin-bottom: 0px;
+                border-radius: 5px;
+            }
+
+            .infolocation {
+                display: flex;
+                padding: 10px 15px;
+            }
+
+
+            .child-all-container {
+                padding: 20px 40px;
+            }
+        }
+
+        @media (min-width: 800px) {
+            .filter-container {
+                display: flex;
+                flex: 1 1 0%;
+            }
+        }
+
+        @media (min-width: 1050px) {
+            .all-container {
+                padding: 0 112px
+            }
+
+            .filter-select {
+                font-size: 12px;
+                padding: 10px 15px 10px 7px;
+            }
+
+            .my-datepicker {
+                font-size: 12px;
+                padding: 10px 15px !important;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .my-datepicker {
+                font-size: 12px;
+                padding: 10px 18px !important;
+            }
+
+            .filter-select {
+                font-size: 16px;
+                padding: 10px 18px 10px 9px;
+            }
+        }
+
+        @media (min-width: 1450px) {
+            .my-datepicker {
+                font-size: 14px;
+                padding: 10px 20px !important;
+                width: 170px !important;
+            }
+
+            .filter-select {
+                font-size: 14px;
+                padding: 10px 20px 10px 10px;
+            }
+
+            .title {
+                display: block;
+            }
+
+            .sidebar-container {
+                display: block;
+            }
+
+            .bottom-container {
+                display: none;
+            }
+
+            .map-grand-container {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="all-container">
+        <div class="child-all-container py-5 bg-[#f2f2f2] rounded-[20px]">
+            <div class="flex items-center gap-10 py-3">
+                <div class="title w-[300px] text-xl">Los mejores lugares para disfrutar</div>
+                <div class="filter-container items-center justify-between">
+                    <div class="flex gap-2 pb-2">
+                        <button id="discount-filter" data-dropdown-toggle="discount-dropdown" class="filter-select"
+                            type="button">
+                            <svg fill="red" height="24" viewBox="0 0 24 24" width="24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10l5 5 5-5z" />
+                            </svg>
+                            % de descuento
+
+                        </button>
+                        <div id="discount-dropdown"
+                            class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
+                            <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="discount-filter">
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="checkbox-discount-1" type="checkbox" value="0.2"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-discount-1"
+                                            class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                                            20%</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="checkbox-discount-2" type="checkbox" value="0.25"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-discount-2"
+                                            class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                                            25%</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input id="checkbox-discount-3" type="checkbox" value="0.3"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-discount-3"
+                                            class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                                            30%</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        <input checked id="checkbox-discount-4" type="checkbox" value="0.4"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="checkbox-discount-4"
+                                            class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                                            40%</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <button id="club-btn" data-dropdown-toggle="club-dropdown" class="filter-select" type="button">
+                            <svg fill="red" height="24" viewBox="0 0 24 24" width="24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10l5 5 5-5z" />
+                            </svg>
+                            Tarjeta / Club
+                        </button>
+                        <div id="club-dropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
+                            <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="club-btn">
+
+                            </ul>
+                        </div>
+
+                        <button id="state-filter" data-dropdown-toggle="state-dropdown" class="filter-select"
+                            type="button">
+                            <svg fill="red" height="24" viewBox="0 0 24 24" width="24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10l5 5 5-5z" />
+                            </svg>
+                            Comuna
+                        </button>
+                        <div id="state-dropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
+                            <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200 max-h-[420px] overflow-auto"
+                                aria-labelledby="state-filter">
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="child-filter-container gap-2">
+                        <input type="date" id="my-date-picker" required
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-datepicker">
+                        <button id="category-filter" data-dropdown-toggle="category-dropdown" class="filter-select"
+                            type="button">
+                            <svg fill="red" height="24" viewBox="0 0 24 24" width="24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 10l5 5 5-5z" />
+                            </svg>
+                            Categoría
+                        </button>
+                        <div id="category-dropdown"
+                            class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700">
+                            <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200 max-h-[420px] overflow-auto"
+                                aria-labelledby="category-filter">
+
+                            </ul>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="geolocation-switch">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="map-grand-container gap-10">
+                <div class="w-[300px] sidebar-container">
+                    <div class="sidebar-map flex flex-col gap-6 overflow-auto h-[550px]">
+
+                    </div>
+                </div>
+                <div class="myxl:flex-1 p-4 bg-[#e6e6e6] rounded-lg h-[550px]">
+                    <div class="w-full h-full rounded-lg" id="map">
+
+                    </div>
+                </div>
+                <div class="pt-4 bottom-container items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="#f75707" class="size-12 cursor-pointer left-arrow">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" fill />
+                    </svg>
+                    <div class="sidebar-map bottom-sidebar flex gap-4 overflow-auto flex-1">
+
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="#f75707" class="size-12 cursor-pointer right-arrow">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <script>
+        var locations = [];
+        var filteredLocations = [];
+        var clubs = [], categories = [], states = [], discounts = ["0.4"];
+        var allClubs = [], allCategories = [], allStates = [];
+        var promocion_valida_hasta = '';
+
+        var map = new google.maps.Map(document.getElementById('map'), { zoom: 12, center: { lat: -33.4489, lng: -70.6693 } });
+        var markers = [];
+        var currentInfoWindow = null;
+
+        const spanishDays = ["domingo", "lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]
+        const dayFields = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+        const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+        function filterAndDisplayLocations() {
+            filterLocations();
+            displayLocations()
+        }
+
+        function displayLocations() {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+            var sideBars = document.querySelectorAll('.sidebar-map');
+            sideBars.forEach(item => item.innerHTML = '');
+
+            filteredLocations.forEach((location, i) => {
+                const marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(location["google_maps_data.latitude"], location["google_maps_data.longitude"]),
+                    map: map,
+                    title: location["google_maps_data.name"],
+                    icon: {
+                        url: 'https://lukdescuentos.cl/wp-content/uploads/2024/05/PinPoint_black.png',
+                        scaledSize: new google.maps.Size(40, 40)
+                    }
+                });
+
+                const stars = '★'.repeat(Math.floor(location["google_maps_data.rating"] || 0)) + '☆'.repeat(5 - Math.floor(location["google_maps_data.rating"] || 0));
+
+                let discountDays = '';
+                dayFields.forEach((day, index) => {
+                    if (location[day] && !isNaN(location[day])) {
+                        discountDays += `<div class="discounts">${dayNames[index]}: ${(location[day] * 100).toFixed(0)}%</div>`;
+                    }
+                });
+                const infoContent = `
+                    <div class="location bg-white infolocation">
+                        <img src="${location["google_maps_data.photo"] || 'https://lukdescuentos.cl/wp-content/uploads/2024/06/sin-imagen.png'}" />
+                        <div class="location-details">
+                            <h4 class="location-name">${location["google_maps_data.name"]}</h4>
+                            <div class="flex items-center gap-2">
+                                <span class="rating">${(location["google_maps_data.rating"] || 0).toFixed(1)}</span>
+                                <span class="stars">${stars}</span>
+                                <a href="${location["google_maps_data.site"]}" class="instagram-icon"></a>
+                            </div>
+                            <div class="price-range">$$ - ${location["google_maps_data.type"]}</div>
+                            <div class="discounts">${location["club_de_beneficios"]}</div>
+                            ${discountDays}
+                            <a href="${location["link_detalles"]}" target="_blank">Más detalles</a>
+                        </div>
+                    </div>
+                `;
+
+                const infoWindow = new google.maps.InfoWindow({ content: infoContent });
+
+                marker.addListener('click', function () {
+                    if (currentInfoWindow) {
+                        currentInfoWindow.close();
+                    }
+                    infoWindow.open(map, marker);
+                    currentInfoWindow = infoWindow;
+                });
+
+                markers.push(marker);
+
+                if (i == 0) {
+                    map.setCenter(marker.position);
+                    map.setZoom(12);
+                }
+
+                let discountString = '';
+                if (promocion_valida_hasta) {
+                    const selectedDate = new Date(promocion_valida_hasta);
+                    const selectedDay = selectedDate.getDay() + 1;
+                    discountString = (Number(location[spanishDays[selectedDay]]) * 100) + '%';
+                } else {
+                    discounts.forEach(discount => {
+                        spanishDays.forEach(sd => {
+                            if (typeof location[sd] == "Number" && discount == (location[sd].toString())) {
+                                discountString = (Number(discount) * 100) + '%'
+                            }
+                        })
+                    })
+                }
+
+                const sidebarContent = `
+                    <div class="location min-w-[300px] myxl:min-w-full hover:cursor-pointer" onclick="showInfoWindow(${i})">
+                        <img src="${location["google_maps_data.photo"] || 'https://lukdescuentos.cl/wp-content/uploads/2024/06/sin-imagen.png'}" />
+                        <div class="location-details">
+                            <h4 class="location-name">${location["google_maps_data.name"]}</h4>
+                            <div class="flex items-center gap-2">
+                                <span class="rating">${(location["google_maps_data.rating"] || 0).toFixed(1)}</span>
+                                <span class="stars">${stars}</span>
+                                <a href="${location["google_maps_data.site"]}" class="instagram-icon"></a>
+                            </div>
+                            <div class="price-range">$$ - ${location["google_maps_data.type"]}</div>
+                            <div class="discounts">${location["club_de_beneficios"]} : ${discountString}</div>
+                            <a href="${location["link_detalles"]}" target="_blank">Más detalles</a>
+                        </div>
+                    </div>
+                `;
+                sideBars.forEach(function (item) {
+                    item.innerHTML += sidebarContent;
+                })
+
+            });
+            const leftArrow = document.querySelector('.left-arrow');
+            const rightArrow = document.querySelector('.right-arrow');
+            if (filteredLocations.length == 0) {
+                leftArrow.classList.add('hidden');
+                rightArrow.classList.add('hidden');
+            } else {
+                leftArrow.classList.remove('hidden');
+                rightArrow.classList.remove('hidden');
+            }
+        }
+
+        function filterLocations() {
+            filteredLocations = locations;
+            if (clubs.length > 0) filteredLocations = filteredLocations.filter(location => clubs.includes(location["club_de_beneficios"]));
+            if (categories.length > 0) filteredLocations = filteredLocations.filter(location => categories.includes(location["google_maps_data.category"]));
+            if (states.length > 0) filteredLocations = filteredLocations.filter(location => states.includes(location["state"]));
+            if (discounts.length > 0) {
+                if (promocion_valida_hasta) {
+                    var baseDate = new Date(1900, 0, 1);
+                    var targetDate = new Date(promocion_valida_hasta);
+                    var selectedDay = targetDate.getDay() + 1;
+                    var differenceInMs = targetDate - baseDate;
+                    var msPerDay = 24 * 60 * 60 * 1000;
+                    var serialNumber = Math.floor(differenceInMs / msPerDay) + 1;
+                    filteredLocations = filteredLocations.filter(location => location["promocion_valida_hasta"] > (serialNumber));
+                    filteredLocations = filteredLocations.filter(location => {
+                        if (location[spanishDays[selectedDay]]) return discounts.includes(location[spanishDays[selectedDay]].toString());
+                        return false;
+                    })
+                } else {
+                    filteredLocations = filteredLocations.filter(location => {
+                        let isFiltered = false;
+                        spanishDays.forEach(sd => {
+                            if (location[sd] && discounts.includes(location[sd].toString())) {
+                                isFiltered = true;
+                                return;
+                            }
+                        })
+                        return isFiltered;
+                    })
+                }
+            } else {
+                filteredLocations = [];
+            }
+        }
+
+        function showInfoWindow(i) {
+            if (currentInfoWindow) {
+                currentInfoWindow.close();
+            }
+            const marker = markers[i]
+
+            const stars = '★'.repeat(Math.floor(filteredLocations[i]["google_maps_data.rating"] || 0)) + '☆'.repeat(5 - Math.floor(filteredLocations[i]["google_maps_data.rating"] || 0));
+            let discountDays = '';
+            dayFields.forEach((day, index) => {
+                if (filteredLocations[i][day] && !isNaN(filteredLocations[i][day])) {
+                    discountDays += `<div class="discounts">${dayNames[index]}: ${(filteredLocations[i][day] * 100).toFixed(0)}%</div>`;
+                }
+            });
+            const infoContent = `
+                    <div class="location infolocation bg-white">
+                        <img src="${filteredLocations[i]["google_maps_data.photo"] || 'https://lukdescuentos.cl/wp-content/uploads/2024/06/sin-imagen.png'}" />
+                        <div class="location-details">
+                            <h4 class="location-name">${filteredLocations[i]["google_maps_data.name"]}</h4>
+                            <div class="flex items-center gap-2">
+                                <span class="rating">${(filteredLocations[i]["google_maps_data.rating"] || 0).toFixed(1)}</span>
+                                <span class="stars">${stars}</span>
+                                <a href="${filteredLocations[i]["google_maps_data.site"]}" class="instagram-icon"></a>
+                            </div>
+                            <div class="price-range">$$ - ${filteredLocations[i]["google_maps_data.type"]}</div>
+                            <div class="discounts">${filteredLocations[i]["club_de_beneficios"]}</div>
+                            ${discountDays}
+                            <a href="${filteredLocations[i]["link_detalles"]}" target="_blank">Más detalles</a>
+                        </div>
+                    </div>
+                `;
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: infoContent
+            });
+
+
+
+            infoWindow.open(map, marker);
+            currentInfoWindow = infoWindow;
+        }
+
+        function setFilterSelectFields() {
+            var clubSelector = document.querySelector('#club-dropdown ul');
+            var CategorySelector = document.querySelector('#category-dropdown ul');
+            var stateSelector = document.querySelector('#state-dropdown ul');
+
+            locations.forEach(location => {
+                if (location["club_de_beneficios"] && !allClubs.includes(location["club_de_beneficios"])) {
+                    allClubs.push(location["club_de_beneficios"]);
+                    clubSelector.innerHTML += `
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input id="${"club" + allClubs.length}" type="checkbox" value="${location["club_de_beneficios"]}"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="${"club" + allClubs.length}"
+                                class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                        ${location["club_de_beneficios"]}</label>
+                        </div>
+                    </li>`
+                }
+                if (location["google_maps_data.category"] && !allCategories.includes(location["google_maps_data.category"])) {
+                    allCategories.push(location["google_maps_data.category"]);
+                    CategorySelector.innerHTML += `
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input id="${"cate" + allCategories.length}" type="checkbox" value="${location["google_maps_data.category"]}"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="${"cate" + allCategories.length}"
+                                class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                        ${location["google_maps_data.category"]}</label>
+                        </div>
+                    </li>`
+                }
+                if (location["state"] && !allStates.includes(location["state"])) {
+                    allStates.push(location["state"]);
+                    stateSelector.innerHTML += `
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input id="${"state" + allStates.length}" type="checkbox" value="${location["state"]}"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="${"state" + allStates.length}"
+                                class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
+                        ${location["state"]}</label>
+                        </div>
+                    </li>`
+                }
+            })
+
+        }
+
+        function navigateCurrentPosition() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    map.setCenter(pos);
+                    map.setZoom(15);
+                }, function () {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, map.getCenter());
+            }
+        }
+
+        function handleLocationError(browserHasGeolocation, pos) {
+            var infoWindow = new google.maps.InfoWindow({ map: map });
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+        }
+
+        function handleArrowBtn() {
+            const bottomSidebar = document.querySelector('.bottom-sidebar');
+            const leftArrow = document.querySelector('.left-arrow');
+            const rightArrow = document.querySelector('.right-arrow');
+            rightArrow.addEventListener('click', () => {
+                bottomSidebar.scrollBy({
+                    left: 500,
+                    behavior: "smooth"
+                });
+            })
+            leftArrow.addEventListener('click', () => {
+                bottomSidebar.scrollBy({
+                    left: -500,
+                    behavior: "smooth"
+                });
+            })
+            bottomSidebar.addEventListener('wheel', (event) => {
+                if (event.deltaY !== 0) {
+                    bottomSidebar.scrollLeft += event.deltaY;
+                    event.preventDefault();
+                }
+            });
+        }
+
+        function addEventListenerToForms() {
+            var datepicker = document.getElementById('my-date-picker');
+            var clubChecks = document.querySelectorAll('#club-dropdown input[type="checkbox"]');
+            var categoryChecks = document.querySelectorAll('#category-dropdown input[type="checkbox"]');
+            var stateChecks = document.querySelectorAll('#state-dropdown input[type="checkbox"]');
+            var discountChecks = document.querySelectorAll('#discount-dropdown input[type="checkbox"]');
+            var geolocationSwitch = document.getElementById('geolocation-switch');
+
+            // set default value to checkbox and datepicker
+            geolocationSwitch.checked = true;
+
+            var today = new Date();
+            var todayString = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+            promocion_valida_hasta = todayString;
+            datepicker.value = todayString;
+
+            //add event listeners to select, checkbox, datepicker
+            datepicker.addEventListener('change', function (event) {
+                var minDate = '2024-06-01';
+                const selectedDate = event.target.value;
+                if (selectedDate == '') {
+                    promocion_valida_hasta = '';
+                } else if (selectedDate < minDate) {
+                    promocion_valida_hasta = minDate;
+                } else {
+                    promocion_valida_hasta = event.target.value;
+                }
+                datepicker.value = promocion_valida_hasta;
+                filterAndDisplayLocations(map);
+            });
+
+            clubChecks.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function (event) {
+                    event.target.checked ? clubs.push(event.target.value) : clubs = clubs.filter(item => item !== event.target.value);
+                    filterAndDisplayLocations(map);
+                });
+            });
+
+            categoryChecks.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function (event) {
+                    event.target.checked ? categories.push(event.target.value) : categories = categories.filter(item => item !== event.target.value);
+                    filterAndDisplayLocations(map);
+                });
+            });
+
+            stateChecks.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function (event) {
+                    event.target.checked ? states.push(event.target.value) : states = states.filter(item => item !== event.target.value);
+                    filterAndDisplayLocations(map);
+                });
+            });
+
+            discountChecks.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function (event) {
+                    event.target.checked ? discounts.push(event.target.value) : discounts = discounts.filter(item => item !== event.target.value);
+                    filterAndDisplayLocations(map);
+                });
+            });
+
+            geolocationSwitch.addEventListener('change', function () { if (this.checked) navigateCurrentPosition() });
+        }
+
+        function loadJSON() {
+            fetch('output.json')
+                .then(response => response.json())
+                .then(locs => {
+                    locations = locs;
+                    locations = locations.filter(location => location["google_maps_data.country"] == "Chile")
+                    setFilterSelectFields();
+                    navigateCurrentPosition();
+                    addEventListenerToForms();
+                    handleArrowBtn();
+                    filterAndDisplayLocations();
+                })
+                .catch(error => {
+                    console.error('Error loading the JSON:', error);
+                    alert('Error loading the JSON: ' + error.message);
+                });
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            loadJSON();
+        });
+    </script>
+</body>
+
+</html>
